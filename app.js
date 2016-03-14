@@ -1,16 +1,18 @@
-var app = angular.module('flapperNews', ['ui.router']);
+var app = angular.module('flapperNews', []);
 
 app.controller('MainCtrl', [
-'$scope', 'posts', function($scope){
+'$scope', function($scope){
   $scope.posts = [
-  {title: 'post 1', upvotes: 5},
-  {title: 'post 2', upvotes: 2},
-  {title: 'post 3', upvotes: 15},
-  {title: 'post 4', upvotes: 9},
-  {title: 'post 5', upvotes: 4}
+  {title: 'post 1', upvotes: 5, comments:[
+    {body:'this a comment', upvotes: 0},
+    {body:'comment 2', upvotes: 0}
+    ]},
+  {title: 'post 2', upvotes: 2, comments: []},
+  {title: 'post 3', upvotes: 15, comments: []},
+  {title: 'post 4', upvotes: 9, comments: []},
+  {title: 'post 5', upvotes: 4, comments: []}
   ];
     
-  $scope.posts = posts.posts;
   $scope.addPost = function(){
     if(!$scope.title || $scope.title === '') {
         return;
@@ -18,20 +20,25 @@ app.controller('MainCtrl', [
     $scope.posts.push({
         title: $scope.title,
         link: $scope.link,
-        upvotes: 0
+        upvotes: 0,
+        comments: []
     });
     $scope.title = ''; //reset title
     $scope.link = ''; //reset title
   };
+    
+  $scope.addComment = function(post,comment){
+      post.comments.push({
+          body: comment,
+          upvotes: 0
+});
+  };
+    
   $scope.incrementUpvotes = function(post) {
     post.upvotes += 1;
   };
-}]);
-
-app.factory('posts', [function(){
-    var o = {
-        posts: []
-    };
     
-    return o;
+  $scope.upvoteComment = function(comment) {
+    comment.upvotes += 1;
+  };
 }]);
